@@ -894,6 +894,64 @@ label {
     transform: translateX(-50%) rotate(-45deg);
 }
 
+.spin-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid rgba(12, 35, 41, 0.8);
+    z-index: 2;
+}
+
+.spin-arrow-up {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.spin-arrow-down {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg);
+}
+
+.spin-arrow-right {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.spin-arrow-left {
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+.spin-arrow-up-right {
+    top: 18px;
+    right: 18px;
+    transform: rotate(45deg);
+}
+
+.spin-arrow-up-left {
+    top: 18px;
+    left: 18px;
+    transform: rotate(-45deg);
+}
+
+.spin-arrow-down-right {
+    bottom: 18px;
+    right: 18px;
+    transform: rotate(135deg);
+}
+
+.spin-arrow-down-left {
+    bottom: 18px;
+    left: 18px;
+    transform: rotate(-135deg);
+}
+
 .effect-btn {
     border: 1px solid rgba(12, 35, 41, 0.18);
     border-radius: 10px;
@@ -1150,15 +1208,15 @@ label {
 
 .stats-athlete-avatar-wrap {
     position: relative;
-    width: 88px;
-    height: 88px;
+    width: 112px;
+    height: 112px;
     flex-shrink: 0;
 }
 
 .stats-athlete-avatar {
-    width: 88px;
-    height: 88px;
-    border-radius: 22px;
+    width: 112px;
+    height: 112px;
+    border-radius: 26px;
     object-fit: cover;
     border: 3px solid rgba(18, 110, 82, 0.15);
 }
@@ -1237,7 +1295,7 @@ label {
     justify-content: space-between;
     gap: 1rem;
     align-items: flex-start;
-    margin-bottom: 1rem;
+    margin-bottom: 0.4rem;
 }
 
 .stats-athlete-metrics {

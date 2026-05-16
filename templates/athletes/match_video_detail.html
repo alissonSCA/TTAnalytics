@@ -149,6 +149,14 @@
                                     <div class="spin-cross spin-cross-v"></div>
                                     <div class="spin-diag spin-diag-a"></div>
                                     <div class="spin-diag spin-diag-b"></div>
+                                    <div class="spin-arrow spin-arrow-up"></div>
+                                    <div class="spin-arrow spin-arrow-right"></div>
+                                    <div class="spin-arrow spin-arrow-down"></div>
+                                    <div class="spin-arrow spin-arrow-left"></div>
+                                    <div class="spin-arrow spin-arrow-up-right"></div>
+                                    <div class="spin-arrow spin-arrow-up-left"></div>
+                                    <div class="spin-arrow spin-arrow-down-right"></div>
+                                    <div class="spin-arrow spin-arrow-down-left"></div>
                                     <div class="spin-core"></div>
                                 </div>
                                 <div id="effect-pad" class="effect-pad" role="group" aria-label="Opcoes de efeito">
@@ -233,21 +241,13 @@
                 <li><strong>Letra:</strong> selecionar marcador pelo atalho</li>
                 <li><strong>Numpad 1-9:</strong> escolher efeito da Rebatida (5 = sem efeito)</li>
             </ul>
-
-            <h3>Frame inicial (OpenCV.js)</h3>
-            <p class="subtitle">Se o OpenCV.js carregar com sucesso, o frame inicial e renderizado abaixo.</p>
-            <canvas id="opencv-frame" width="640" height="360" class="match-video"></canvas>
-            <p id="opencv-status" class="field-help">Carregando OpenCV.js...</p>
         </aside>
     </div>
 </section>
 
-<script src="https://docs.opencv.org/4.x/opencv.js" async></script>
 <script>
 (() => {
     const player = document.getElementById('match-video-player');
-    const canvas = document.getElementById('opencv-frame');
-    const statusEl = document.getElementById('opencv-status');
     const speedIndicator = document.getElementById('speed-indicator');
     const timeline = document.getElementById('video-timeline');
     const timelineScrub = document.getElementById('video-timeline-scrub');
@@ -892,25 +892,8 @@
             }
             const blob = await response.blob();
             player.src = URL.createObjectURL(blob);
-            statusEl.textContent = 'Video carregado com sucesso. Aguarde o OpenCV.js.';
         } catch (error) {
-            statusEl.textContent = 'Erro ao carregar video no browser.';
-        }
-    }
-
-    function renderFrameWithOpenCv() {
-        if (!window.cv || !player.src) {
-            return;
-        }
-        try {
-            const capture = new cv.VideoCapture(player);
-            const frame = new cv.Mat(player.videoHeight || 360, player.videoWidth || 640, cv.CV_8UC4);
-            capture.read(frame);
-            cv.imshow('opencv-frame', frame);
-            frame.delete();
-            statusEl.textContent = 'OpenCV.js ativo: frame inicial renderizado.';
-        } catch (err) {
-            statusEl.textContent = 'OpenCV.js carregou, mas nao foi possivel renderizar frame.';
+            scoreboardStatus.textContent = 'Erro ao carregar video no browser.';
         }
     }
 
@@ -1235,22 +1218,6 @@
     player.addEventListener('durationchange', updateTimelineDuration);
     player.addEventListener('timeupdate', syncTimelineProgress);
     player.addEventListener('seeked', syncTimelineProgress);
-
-    player.addEventListener('loadeddata', () => {
-        if (window.cv && window.cv.Mat) {
-            renderFrameWithOpenCv();
-        }
-    });
-
-    window.Module = {
-        onRuntimeInitialized() {
-            if (player.readyState >= 2) {
-                renderFrameWithOpenCv();
-            } else {
-                statusEl.textContent = 'OpenCV.js carregado. Inicie o video para renderizar frame.';
-            }
-        }
-    };
 })();
 </script>
 {% endblock %}

@@ -126,14 +126,7 @@
                 <div class="stats-heatmap-grid">
                     <section class="heatmap-card">
                         <div class="heatmap-card-head heatmap-card-head-with-avatar">
-                            <div class="heatmap-card-identity">
-                                <div class="heatmap-card-avatar-wrap">
-                                    {% if athlete.photo_url %}
-                                        <img src="{{ athlete.photo_url }}" alt="{{ athlete.name }}" class="heatmap-card-avatar">
-                                    {% else %}
-                                        <div class="heatmap-card-avatar heatmap-card-avatar-fallback">{{ athlete.name|slice:":1"|upper }}</div>
-                                    {% endif %}
-                                </div>
+                            <div class="heatmap-card-identity">                                
                                 <div>
                                     <h4>Pontos marcados</h4>
                                     <p>Quadrantes das rebatidas que antecederam pontos vencidos.</p>
@@ -146,13 +139,6 @@
                     <section class="heatmap-card heatmap-card-danger">
                         <div class="heatmap-card-head heatmap-card-head-with-avatar heatmap-card-head-right">
                             <div class="heatmap-card-identity">
-                                <div class="heatmap-card-avatar-wrap">
-                                    {% if athlete.photo_url %}
-                                        <img src="{{ athlete.photo_url }}" alt="{{ athlete.name }}" class="heatmap-card-avatar">
-                                    {% else %}
-                                        <div class="heatmap-card-avatar heatmap-card-avatar-fallback">{{ athlete.name|slice:":1"|upper }}</div>
-                                    {% endif %}
-                                </div>
                                 <div>
                                     <h4>Pontos cedidos</h4>
                                     <p>Quadrantes das rebatidas em rallies perdidos.</p>
