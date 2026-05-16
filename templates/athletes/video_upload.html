@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload de Video | Table Tennis Analytics{% endblock %}
+
+{% block content %}
+<section class="dashboard-shell">
+    <article class="dashboard-card intro-card">
+        <p class="eyebrow">Analise de partidas</p>
+        <h1>Envie o video da sua partida</h1>
+        <p class="subtitle">Informe os atletas, a competicao e a data para organizar seu historico.</p>
+    </article>
+
+    <article class="dashboard-card auth-panel-wide">
+        <form method="post" enctype="multipart/form-data" class="form-grid form-grid-2">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors form-span-2">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="field-wrap {% if field.name == 'video_file' %}form-span-2{% endif %}">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.name == 'athlete_two_profile' %}
+                        <small class="field-help">Se o adversario nao for atleta cadastrado, selecione no campo Adversario abaixo.</small>
+                    {% endif %}
+                    {% if field.name == 'opponent' %}
+                        <small class="field-help">Nao encontrou o adversario? <a href="{% url 'opponent_create' %}?source=match_video_upload">Cadastre aqui</a>.</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <small class="field-error">{{ field.errors|striptags }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-span-2 actions-row">
+                <a href="{% url 'home' %}" class="btn btn-outline">Voltar</a>
+                <button type="submit" class="btn btn-primary">Salvar video</button>
+            </div>
+        </form>
+    </article>
+
+    <article class="dashboard-card stat-card">
+        <h3>Buscar videos</h3>
+        <form method="get" class="form-grid form-grid-2">
+            <div class="field-wrap">
+                <label for="competition-filter">Competicao</label>
+                <select id="competition-filter" name="competition" class="form-control">
+                    <option value="">Todas</option>
+                    {% for comp in competitions %}
+                        <option value="{{ comp.id }}" {% if selected_competition == comp.id|stringformat:'s' %}selected{% endif %}>{{ comp.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field-wrap">
+                <label for="athlete-filter">Atleta</label>
+                <input id="athlete-filter" type="text" name="athlete" class="form-control" list="athlete-suggestions" value="{{ selected_athlete }}" placeholder="Digite o nome do atleta">
+                <datalist id="athlete-suggestions">
+                    {% for athlete in athletes %}
+                        <option value="{{ athlete.full_name }}"></option>
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="form-span-2 actions-row">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a href="{% url 'match_video_upload' %}" class="btn btn-outline">Limpar filtros</a>
+            </div>
+        </form>
+    </article>
+
+    <article class="dashboard-card stat-card">
+        <h3>Videos enviados</h3>
+        {% if recent_videos %}
+            <div class="video-grid">
+                {% for item in recent_videos %}
+                    <div class="video-card">
+                        <video class="match-video" controls preload="metadata">
+                            <source src="{{ item.video_file.url }}">
+                            Seu navegador nao suporta video.
+                        </video>
+                        <p><strong>{{ item.athlete_one_name }} x {{ item.athlete_two_name }}</strong></p>
+                        <p>{{ item.competition.name }} - {{ item.match_date|date:'d/m/Y' }}</p>
+                        {% if item.description %}
+                            <p>{{ item.description }}</p>
+                        {% endif %}
+                        <a href="{{ item.video_file.url }}" target="_blank" rel="noopener" class="btn btn-outline">Abrir video</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Ainda nao ha videos enviados.</p>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}
