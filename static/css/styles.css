@@ -956,11 +956,26 @@ label {
     border: 1px solid rgba(12, 35, 41, 0.18);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.9);
-    padding: 0.5rem 0.35rem;
+    padding: 0.4rem 0.25rem;
     font-size: 0.92rem;
     font-weight: 800;
     color: #17333b;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.05rem;
+}
+
+.effect-arrow {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.effect-key {
+    font-size: 0.65rem;
+    opacity: 0.55;
+    font-weight: 700;
 }
 
 .effect-btn:hover {
@@ -989,18 +1004,31 @@ label {
     background: rgba(255, 255, 255, 0.6);
     height: 34px;
     cursor: pointer;
-    color: transparent;
-    font-size: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.82rem;
+    font-weight: 800;
 }
 
 .table-hit-btn:hover {
     background: rgba(255, 255, 255, 0.8);
+    color: #17333b;
 }
 
 .table-hit-btn.active {
     background: #fff;
     outline: 2px solid rgba(226, 82, 29, 0.8);
-    color: transparent;
+    color: #e25a1c;
+}
+
+.detail-step-panel {
+    border-radius: 8px;
+    padding: 0.4rem;
+    transition: background 0.15s, outline 0.15s;
+}
+
+.detail-step-panel.detail-step-active {
+    background: rgba(18, 110, 82, 0.07);
+    outline: 2px solid rgba(18, 110, 82, 0.3);
 }
 
 @media (max-width: 1200px) {
