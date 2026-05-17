@@ -151,22 +151,15 @@ class MatchVideoUploadForm(forms.ModelForm):
     athlete_one_profile = forms.ModelChoiceField(
         queryset=AthleteProfile.objects.none(),
         required=True,
-        label='Atleta 1 (cadastro)',
+        label='Atleta 1',
         empty_label='Selecione o atleta',
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
     athlete_two_profile = forms.ModelChoiceField(
         queryset=AthleteProfile.objects.none(),
-        required=False,
-        label='Atleta 2 (cadastro)',
-        empty_label='Selecione se o adversario estiver cadastrado',
-        widget=forms.Select(attrs={'class': 'form-control'}),
-    )
-    opponent = forms.ModelChoiceField(
-        queryset=Opponent.objects.none(),
-        required=False,
-        label='Adversario (nao cadastrado como atleta)',
-        empty_label='Selecione o adversario cadastrado',
+        required=True,
+        label='Atleta 2',
+        empty_label='Selecione o atleta',
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
     set_results_json = forms.CharField(
@@ -180,7 +173,6 @@ class MatchVideoUploadForm(forms.ModelForm):
             'video_file',
             'athlete_one_profile',
             'athlete_two_profile',
-            'opponent',
             'competition',
             'match_date',
             'description',
@@ -203,24 +195,22 @@ class MatchVideoUploadForm(forms.ModelForm):
         self.fields['competition'].queryset = Competition.objects.all()
         self.fields['athlete_one_profile'].queryset = AthleteProfile.objects.all()
         self.fields['athlete_two_profile'].queryset = AthleteProfile.objects.all()
-        self.fields['opponent'].queryset = Opponent.objects.all()
 
     def clean(self):
         cleaned_data = super().clean()
 
         athlete_one_profile = cleaned_data.get('athlete_one_profile')
         athlete_two_profile = cleaned_data.get('athlete_two_profile')
-        opponent = cleaned_data.get('opponent')
         set_results_json = cleaned_data.get('set_results_json', '')
 
         if not athlete_one_profile:
             self.add_error('athlete_one_profile', 'Selecione o atleta 1 cadastrado.')
 
-        if athlete_two_profile and opponent:
-            self.add_error('opponent', 'Escolha apenas uma opcao: atleta 2 cadastrado ou adversario.')
+        if not athlete_two_profile:
+            self.add_error('athlete_two_profile', 'Selecione o atleta 2 cadastrado.')
 
-        if not athlete_two_profile and not opponent:
-            self.add_error('opponent', 'Selecione um adversario cadastrado ou um atleta 2 cadastrado.')
+        if athlete_one_profile and athlete_two_profile and athlete_one_profile.id == athlete_two_profile.id:
+            self.add_error('athlete_two_profile', 'O atleta 2 deve ser diferente do atleta 1.')
 
         # Validar dados de sets se fornecidos
         if set_results_json:
@@ -249,14 +239,10 @@ class MatchVideoUploadForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         athlete_one_profile = self.cleaned_data['athlete_one_profile']
-        athlete_two_profile = self.cleaned_data.get('athlete_two_profile')
-        opponent = self.cleaned_data.get('opponent')
+        athlete_two_profile = self.cleaned_data['athlete_two_profile']
 
         instance.athlete_one_name = athlete_one_profile.full_name
-        if athlete_two_profile:
-            instance.athlete_two_name = athlete_two_profile.full_name
-        else:
-            instance.athlete_two_name = opponent.name
+        instance.athlete_two_name = athlete_two_profile.full_name
 
         if commit:
             instance.save()

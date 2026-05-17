@@ -63,7 +63,6 @@ class MatchVideoAdmin(admin.ModelAdmin):
 		'athlete_one_profile',
 		'athlete_two_name',
 		'athlete_two_profile',
-		'opponent',
 		'competition',
 		'match_date',
 		'description',

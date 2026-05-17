@@ -141,14 +141,6 @@ class MatchVideo(models.Model):
 		related_name='match_videos_as_athlete_two',
 		verbose_name='Atleta 2 (cadastro)',
 	)
-	opponent = models.ForeignKey(
-		Opponent,
-		on_delete=models.SET_NULL,
-		null=True,
-		blank=True,
-		related_name='match_videos',
-		verbose_name='Adversario',
-	)
 	athlete_one_name = models.CharField('Atleta 1', max_length=120)
 	athlete_two_name = models.CharField('Atleta 2', max_length=120)
 	competition = models.ForeignKey(Competition, on_delete=models.PROTECT, verbose_name='Competicao')

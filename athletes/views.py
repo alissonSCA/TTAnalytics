@@ -344,7 +344,7 @@ def home_view(request):
 	selected_athlete = request.GET.get('home_athlete', '').strip()
 	selected_order = request.GET.get('home_order', 'recent').strip()
 
-	highlight_matches = MatchVideo.objects.filter(uploaded_by=request.user).select_related('competition', 'opponent')
+	highlight_matches = MatchVideo.objects.filter(uploaded_by=request.user).select_related('competition')
 
 	if selected_competition.isdigit():
 		highlight_matches = highlight_matches.filter(competition_id=int(selected_competition))
@@ -463,7 +463,6 @@ def opponent_create_view(request: HttpRequest):
 
 @login_required
 def match_video_upload_view(request: HttpRequest):
-	selected_opponent_id = request.GET.get('opponent_id')
 	if request.method == 'POST':
 		form = MatchVideoUploadForm(request.POST, request.FILES)
 		if form.is_valid():
@@ -490,10 +489,7 @@ def match_video_upload_view(request: HttpRequest):
 			messages.success(request, 'Video enviado com sucesso.')
 			return redirect('match_video_upload')
 	else:
-		initial = {}
-		if selected_opponent_id and selected_opponent_id.isdigit():
-			initial['opponent'] = int(selected_opponent_id)
-		form = MatchVideoUploadForm(initial=initial)
+		form = MatchVideoUploadForm()
 
 	selected_competition = request.GET.get('competition', '').strip()
 	selected_athlete = request.GET.get('athlete', '').strip()
@@ -502,15 +498,6 @@ def match_video_upload_view(request: HttpRequest):
 
 	if selected_competition.isdigit():
 		videos = videos.filter(competition_id=int(selected_competition))
-
-	if selected_athlete:
-		videos = videos.filter(
-			Q(athlete_one_name__icontains=selected_athlete)
-			| Q(athlete_two_name__icontains=selected_athlete)
-			| Q(athlete_one_profile__full_name__icontains=selected_athlete)
-			| Q(athlete_two_profile__full_name__icontains=selected_athlete)
-			| Q(opponent__name__icontains=selected_athlete)
-		)
 
 	videos = videos[:30]
 	competitions = Competition.objects.all()
@@ -530,7 +517,7 @@ def match_video_upload_view(request: HttpRequest):
 @login_required
 def match_video_detail_view(request: HttpRequest, video_id: int):
 	video = get_object_or_404(
-		MatchVideo.objects.select_related('competition', 'opponent', 'athlete_one_profile', 'athlete_two_profile'),
+		MatchVideo.objects.select_related('competition', 'athlete_one_profile', 'athlete_two_profile'),
 		id=video_id,
 		uploaded_by=request.user,
 	)
@@ -566,7 +553,7 @@ def match_video_detail_view(request: HttpRequest, video_id: int):
 @login_required
 def match_video_statistics_view(request: HttpRequest, video_id: int):
 	video = get_object_or_404(
-		MatchVideo.objects.select_related('competition', 'opponent', 'athlete_one_profile', 'athlete_two_profile'),
+		MatchVideo.objects.select_related('competition', 'athlete_one_profile', 'athlete_two_profile'),
 		id=video_id,
 		uploaded_by=request.user,
 	)

@@ -24,10 +24,7 @@
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
                     {% if field.name == 'athlete_two_profile' %}
-                        <small class="field-help">Se o adversario nao for atleta cadastrado, selecione no campo Adversario abaixo.</small>
-                    {% endif %}
-                    {% if field.name == 'opponent' %}
-                        <small class="field-help">Nao encontrou o adversario? <a href="{% url 'opponent_create' %}?source=match_video_upload">Cadastre aqui</a>.</small>
+                        <small class="field-help">Atleta 2 precisa estar cadastrado no sistema. <a href="{% url 'signup' %}">Cadastre um novo atleta aqui</a>.</small>
                     {% endif %}
                     {% if field.errors %}
                         <small class="field-error">{{ field.errors|striptags }}</small>
