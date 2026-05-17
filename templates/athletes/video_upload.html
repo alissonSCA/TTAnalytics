@@ -19,6 +19,7 @@
             {% endif %}
 
             {% for field in form %}
+                {% if field.name != 'set_results_json' %}
                 <div class="field-wrap {% if field.name == 'video_file' %}form-span-2{% endif %}">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
@@ -32,7 +33,34 @@
                         <small class="field-error">{{ field.errors|striptags }}</small>
                     {% endif %}
                 </div>
+                {% endif %}
             {% endfor %}
+
+            <!-- Campo oculto para dados de sets -->
+            {{ form.set_results_json }}
+
+            <!-- Seção de sets -->
+            <fieldset class="form-span-2" style="border: 1px solid #e5e7eb; border-radius: 6px; padding: 1rem; margin: 1rem 0;">
+                <legend style="font-weight: bold; padding: 0 0.5rem;">Placares dos Sets</legend>
+                <div id="sets-container" style="display: grid; gap: 1rem;">
+                    <div class="set-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.5rem; align-items: end;">
+                        <div>
+                            <label>Set</label>
+                            <input type="number" class="form-control set-number" value="1" disabled style="background-color: #f3f4f6;">
+                        </div>
+                        <div>
+                            <label>{{ form.athlete_one_profile.label }} (pontos)</label>
+                            <input type="number" class="form-control set-athlete-one" min="0" value="0">
+                        </div>
+                        <div>
+                            <label>{{ form.athlete_two_profile.label }} (pontos)</label>
+                            <input type="number" class="form-control set-athlete-two" min="0" value="0">
+                        </div>
+                        <button type="button" class="btn btn-outline remove-set-btn" style="display: none;">Remover</button>
+                    </div>
+                </div>
+                <button type="button" id="add-set-btn" class="btn btn-outline" style="margin-top: 1rem;">+ Adicionar Set</button>
+            </fieldset>
 
             <div class="form-span-2 actions-row">
                 <a href="{% url 'home' %}" class="btn btn-outline">Voltar</a>
@@ -93,4 +121,102 @@
         {% endif %}
     </article>
 </section>
+
+<script>
+(() => {
+    const setsContainer = document.getElementById('sets-container');
+    const addSetBtn = document.getElementById('add-set-btn');
+    const setResultsJson = document.getElementById('id_set_results_json');
+    const form = document.querySelector('form[method="post"]');
+
+    function updateSetNumbers() {
+        const rows = setsContainer.querySelectorAll('.set-row');
+        rows.forEach((row, index) => {
+            const numberInput = row.querySelector('.set-number');
+            const removeBtn = row.querySelector('.remove-set-btn');
+            numberInput.value = index + 1;
+            removeBtn.style.display = rows.length > 1 ? 'block' : 'none';
+        });
+    }
+
+    function serializeSetResults() {
+        const rows = setsContainer.querySelectorAll('.set-row');
+        const results = [];
+        rows.forEach((row) => {
+            const athleteOne = parseInt(row.querySelector('.set-athlete-one').value) || 0;
+            const athleteTwo = parseInt(row.querySelector('.set-athlete-two').value) || 0;
+            if (athleteOne > 0 || athleteTwo > 0) {
+                results.push({
+                    athlete_one: athleteOne,
+                    athlete_two: athleteTwo,
+                });
+            }
+        });
+        return results.length > 0 ? JSON.stringify(results) : '';
+    }
+
+    function addNewSet() {
+        const newRow = document.createElement('div');
+        newRow.className = 'set-row';
+        newRow.style.display = 'grid';
+        newRow.style.gridTemplateColumns = '1fr 1fr 1fr auto';
+        newRow.style.gap = '0.5rem';
+        newRow.style.alignItems = 'end';
+
+        const setNum = setsContainer.querySelectorAll('.set-row').length + 1;
+        newRow.innerHTML = `
+            <div>
+                <label>Set</label>
+                <input type="number" class="form-control set-number" value="${setNum}" disabled style="background-color: #f3f4f6;">
+            </div>
+            <div>
+                <label>Atleta 1 (pontos)</label>
+                <input type="number" class="form-control set-athlete-one" min="0" value="0">
+            </div>
+            <div>
+                <label>Atleta 2 (pontos)</label>
+                <input type="number" class="form-control set-athlete-two" min="0" value="0">
+            </div>
+            <button type="button" class="btn btn-outline remove-set-btn">Remover</button>
+        `;
+
+        const removeBtn = newRow.querySelector('.remove-set-btn');
+        removeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            newRow.remove();
+            updateSetNumbers();
+            serializeAndUpdateField();
+        });
+
+        setsContainer.appendChild(newRow);
+        updateSetNumbers();
+    }
+
+    function serializeAndUpdateField() {
+        const serialized = serializeSetResults();
+        setResultsJson.value = serialized;
+    }
+
+    addSetBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        addNewSet();
+        serializeAndUpdateField();
+    });
+
+    // Adicionar listeners aos inputs existentes para atualizar o campo oculto
+    setsContainer.addEventListener('change', (e) => {
+        if (e.target.classList.contains('set-athlete-one') || e.target.classList.contains('set-athlete-two')) {
+            serializeAndUpdateField();
+        }
+    });
+
+    // Validar antes de submeter
+    form.addEventListener('submit', (e) => {
+        serializeAndUpdateField();
+    });
+
+    // Inicializar
+    updateSetNumbers();
+})();
+</script>
 {% endblock %}

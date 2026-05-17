@@ -169,6 +169,10 @@ class MatchVideoUploadForm(forms.ModelForm):
         empty_label='Selecione o adversario cadastrado',
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
+    set_results_json = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
 
     class Meta:
         model = MatchVideo
@@ -207,6 +211,7 @@ class MatchVideoUploadForm(forms.ModelForm):
         athlete_one_profile = cleaned_data.get('athlete_one_profile')
         athlete_two_profile = cleaned_data.get('athlete_two_profile')
         opponent = cleaned_data.get('opponent')
+        set_results_json = cleaned_data.get('set_results_json', '')
 
         if not athlete_one_profile:
             self.add_error('athlete_one_profile', 'Selecione o atleta 1 cadastrado.')
@@ -216,6 +221,28 @@ class MatchVideoUploadForm(forms.ModelForm):
 
         if not athlete_two_profile and not opponent:
             self.add_error('opponent', 'Selecione um adversario cadastrado ou um atleta 2 cadastrado.')
+
+        # Validar dados de sets se fornecidos
+        if set_results_json:
+            import json
+            try:
+                set_results = json.loads(set_results_json)
+                if not isinstance(set_results, list) or len(set_results) == 0:
+                    self.add_error('set_results_json', 'Forneça pelo menos um set com os placares.')
+                else:
+                    for i, result in enumerate(set_results, 1):
+                        if not isinstance(result, dict) or 'athlete_one' not in result or 'athlete_two' not in result:
+                            self.add_error('set_results_json', f'Set {i} deve conter placares para ambos os atletas.')
+                        else:
+                            try:
+                                a1 = int(result['athlete_one'])
+                                a2 = int(result['athlete_two'])
+                                if a1 < 0 or a2 < 0:
+                                    self.add_error('set_results_json', f'Set {i}: os placares devem ser não-negativos.')
+                            except (ValueError, TypeError):
+                                self.add_error('set_results_json', f'Set {i}: os placares devem ser números inteiros.')
+            except json.JSONDecodeError:
+                self.add_error('set_results_json', 'Dados de sets inválidos.')
 
         return cleaned_data
 

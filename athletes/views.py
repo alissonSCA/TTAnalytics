@@ -11,7 +11,7 @@ from django.db.models import Q
 import json
 
 from .forms import AthleteProfileUpdateForm, MatchVideoUploadForm, MaterialCreateForm, OpponentCreateForm, SignUpForm
-from .models import AthleteProfile, Competition, MatchGameAction, MatchMarkerType, MatchVideo
+from .models import AthleteProfile, Competition, MatchGameAction, MatchMarkerType, MatchSetResult, MatchVideo
 
 
 DUPLICATE_ACTION_WINDOW_SECONDS = 1.2
@@ -470,6 +470,23 @@ def match_video_upload_view(request: HttpRequest):
 			video = form.save(commit=False)
 			video.uploaded_by = request.user
 			video.save()
+			
+			# Processar dados de sets se fornecidos
+			set_results_json = form.cleaned_data.get('set_results_json', '')
+			if set_results_json:
+				try:
+					set_results = json.loads(set_results_json)
+					for i, result in enumerate(set_results, 1):
+						MatchSetResult.objects.create(
+							match_video=video,
+							set_number=i,
+							athlete_one_score=int(result['athlete_one']),
+							athlete_two_score=int(result['athlete_two']),
+						)
+				except (json.JSONDecodeError, ValueError, TypeError) as e:
+					messages.error(request, f'Erro ao salvar dados de sets: {str(e)}')
+					return redirect('match_video_upload')
+			
 			messages.success(request, 'Video enviado com sucesso.')
 			return redirect('match_video_upload')
 	else:

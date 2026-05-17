@@ -166,6 +166,22 @@ class MatchVideo(models.Model):
 		return f'{self.athlete_one_name} vs {self.athlete_two_name} - {self.competition.name}'
 
 
+class MatchSetResult(models.Model):
+	match_video = models.ForeignKey(MatchVideo, on_delete=models.CASCADE, related_name='set_results')
+	set_number = models.PositiveSmallIntegerField('Número do set')
+	athlete_one_score = models.PositiveSmallIntegerField('Pontuação atleta 1')
+	athlete_two_score = models.PositiveSmallIntegerField('Pontuação atleta 2')
+
+	class Meta:
+		ordering = ['set_number']
+		verbose_name = 'Resultado de set'
+		verbose_name_plural = 'Resultados de sets'
+		unique_together = ('match_video', 'set_number')
+
+	def __str__(self) -> str:
+		return f'Set {self.set_number}: {self.athlete_one_score} x {self.athlete_two_score}'
+
+
 class MatchMarkerType(models.Model):
 	code = models.CharField(max_length=40, unique=True)
 	name = models.CharField(max_length=80, unique=True)

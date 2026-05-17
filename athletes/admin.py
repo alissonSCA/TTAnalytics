@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import AthleteProfile, Club, Competition, Grip, MatchGameAction, MatchMarkerType, MatchVideo, Material, Opponent, Style
+from .models import AthleteProfile, Club, Competition, Grip, MatchGameAction, MatchMarkerType, MatchSetResult, MatchVideo, Material, Opponent, Style
 
 
 @admin.register(Grip)
@@ -71,6 +71,14 @@ class MatchVideoAdmin(admin.ModelAdmin):
 	)
 	list_filter = ('competition', 'match_date', 'created_at')
 	search_fields = ('uploaded_by__username', 'athlete_one_name', 'athlete_two_name', 'competition__name')
+
+
+@admin.register(MatchSetResult)
+class MatchSetResultAdmin(admin.ModelAdmin):
+	list_display = ('match_video', 'set_number', 'athlete_one_score', 'athlete_two_score')
+	list_filter = ('set_number', 'match_video__competition')
+	search_fields = ('match_video__athlete_one_name', 'match_video__athlete_two_name')
+	readonly_fields = ('match_video', 'set_number')
 
 
 @admin.register(MatchMarkerType)
