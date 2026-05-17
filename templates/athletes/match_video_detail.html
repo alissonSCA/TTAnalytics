@@ -160,31 +160,31 @@
                                     <div class="spin-core"></div>
                                 </div>
                                 <div id="effect-pad" class="effect-pad" role="group" aria-label="Opcoes de efeito">
-                                    <button type="button" class="effect-btn" data-effect-key="7" data-effect-label="7 - efeito para cima e para esquerda">7</button>
-                                    <button type="button" class="effect-btn" data-effect-key="8" data-effect-label="8 - efeito para cima">8</button>
-                                    <button type="button" class="effect-btn" data-effect-key="9" data-effect-label="9 - efeito para cima e para direita">9</button>
-                                    <button type="button" class="effect-btn" data-effect-key="4" data-effect-label="4 - efeito para esquerda">4</button>
-                                    <button type="button" class="effect-btn" data-effect-key="5" data-effect-label="5 - sem efeito">5</button>
-                                    <button type="button" class="effect-btn" data-effect-key="6" data-effect-label="6 - efeito para direita">6</button>
-                                    <button type="button" class="effect-btn" data-effect-key="1" data-effect-label="1 - efeito para baixo e para esquerda">1</button>
-                                    <button type="button" class="effect-btn" data-effect-key="2" data-effect-label="2 - efeito para baixo">2</button>
-                                    <button type="button" class="effect-btn" data-effect-key="3" data-effect-label="3 - efeito para baixo e para direita">3</button>
+                                    <button type="button" class="effect-btn" data-effect-key="7" data-effect-label="7 - efeito para cima e para esquerda">7<span class="effect-dir">↖</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="8" data-effect-label="8 - efeito para cima">8<span class="effect-dir">↑</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="9" data-effect-label="9 - efeito para cima e para direita">9<span class="effect-dir">↗</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="4" data-effect-label="4 - efeito para esquerda">4<span class="effect-dir">←</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="5" data-effect-label="5 - sem efeito">5<span class="effect-dir">·</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="6" data-effect-label="6 - efeito para direita">6<span class="effect-dir">→</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="1" data-effect-label="1 - efeito para baixo e para esquerda">1<span class="effect-dir">↙</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="2" data-effect-label="2 - efeito para baixo">2<span class="effect-dir">↓</span></button>
+                                    <button type="button" class="effect-btn" data-effect-key="3" data-effect-label="3 - efeito para baixo e para direita">3<span class="effect-dir">↘</span></button>
                                 </div>
                             </div>
                             <input id="detail-effect" type="text" class="form-control" readonly>
                         </div>
                         <div class="field-wrap marker-details-span-2">
-                            <span>Mesa (clique no quadrante aproximado)</span>
+                            <span>Mesa (clique ou numpad no quadrante aproximado)</span>
                             <div id="table-hit-grid" class="table-hit-grid" role="group" aria-label="Local da quicada na mesa">
-                                <button type="button" class="table-hit-btn" data-pos="7" aria-label="Quadrante superior esquerdo"></button>
-                                <button type="button" class="table-hit-btn" data-pos="8" aria-label="Quadrante superior central"></button>
-                                <button type="button" class="table-hit-btn" data-pos="9" aria-label="Quadrante superior direito"></button>
-                                <button type="button" class="table-hit-btn" data-pos="4" aria-label="Quadrante meio esquerdo"></button>
-                                <button type="button" class="table-hit-btn" data-pos="5" aria-label="Quadrante central"></button>
-                                <button type="button" class="table-hit-btn" data-pos="6" aria-label="Quadrante meio direito"></button>
-                                <button type="button" class="table-hit-btn" data-pos="1" aria-label="Quadrante inferior esquerdo"></button>
-                                <button type="button" class="table-hit-btn" data-pos="2" aria-label="Quadrante inferior central"></button>
-                                <button type="button" class="table-hit-btn" data-pos="3" aria-label="Quadrante inferior direito"></button>
+                                <button type="button" class="table-hit-btn" data-pos="7" aria-label="Quadrante superior esquerdo">7</button>
+                                <button type="button" class="table-hit-btn" data-pos="8" aria-label="Quadrante superior central">8</button>
+                                <button type="button" class="table-hit-btn" data-pos="9" aria-label="Quadrante superior direito">9</button>
+                                <button type="button" class="table-hit-btn" data-pos="4" aria-label="Quadrante meio esquerdo">4</button>
+                                <button type="button" class="table-hit-btn" data-pos="5" aria-label="Quadrante central">5</button>
+                                <button type="button" class="table-hit-btn" data-pos="6" aria-label="Quadrante meio direito">6</button>
+                                <button type="button" class="table-hit-btn" data-pos="1" aria-label="Quadrante inferior esquerdo">1</button>
+                                <button type="button" class="table-hit-btn" data-pos="2" aria-label="Quadrante inferior central">2</button>
+                                <button type="button" class="table-hit-btn" data-pos="3" aria-label="Quadrante inferior direito">3</button>
                             </div>
                             <input id="detail-position" type="text" class="form-control" readonly>
                         </div>
@@ -237,9 +237,9 @@
                 <li><strong>Seta para direita:</strong> avancar frame</li>
                 <li><strong>Seta para esquerda:</strong> voltar frame</li>
                 <li><strong>Esc:</strong> limpar ROI e voltar ao video original</li>
-                <li><strong>Enter:</strong> salvar o marcador selecionado (fora dos botoes de detalhe)</li>
+                <li><strong>Enter:</strong> confirma efeito (1&#186;) &#8594; confirma posicao (2&#186;) &#8594; salva (Rebatida); ou salva direto para outros marcadores</li>
                 <li><strong>Letra:</strong> selecionar marcador pelo atalho</li>
-                <li><strong>Numpad 1-9:</strong> escolher efeito da Rebatida (5 = sem efeito)</li>
+                <li><strong>Numpad 1-9:</strong> escolher efeito da Rebatida (5 = sem efeito); apos 1&#186; Enter, escolher quadrante da mesa</li>
             </ul>
         </aside>
     </div>
@@ -312,6 +312,7 @@
     let nextRebatidaNumber = 1;
     let currentServer = serverSelect.value;
     let serveSequenceCounter = 0;
+    let numpadInputPhase = null; // null | 'effect' | 'position'
 
     function formatSpeed(value) {
         return `${value.toFixed(2).replace(/\.00$/, '.0').replace(/(\.[1-9])0$/, '$1')}x`;
@@ -431,9 +432,20 @@
         });
     }
 
+    function highlightNumpadPhase() {
+        effectPad.classList.toggle('numpad-phase-active', numpadInputPhase === 'effect');
+        tableHitGrid.classList.toggle('numpad-phase-active', numpadInputPhase === 'position');
+    }
+
+    function resetNumpadPhase() {
+        numpadInputPhase = null;
+        highlightNumpadPhase();
+    }
+
     async function saveSelectedMarkerAndResume() {
         player.pause();
         await saveGameAction('score_update');
+        resetNumpadPhase();
         showPlaybackIndicator('Marcacao salva');
     }
 
@@ -931,7 +943,8 @@
     });
 
     timelineScrub.addEventListener('keydown', (event) => {
-        if (event.code !== 'Enter' && event.code !== 'Space') {
+        const isEnter = event.key === 'Enter' || event.code === 'NumpadEnter';
+        if (!isEnter && event.code !== 'Space') {
             return;
         }
         event.preventDefault();
@@ -996,6 +1009,7 @@
         const markerName = getMarkerNameFromOption(option);
         const shortcutLabel = option && option.dataset.shortcutKey ? ` (${option.dataset.shortcutKey})` : '';
         scoreboardStatus.textContent = `Marcador selecionado: ${markerName}${shortcutLabel}.`;
+        resetNumpadPhase();
         updateMarkerDetailsVisibility();
     });
 
@@ -1121,6 +1135,7 @@
             || target.tagName === 'TEXTAREA'
             || target.tagName === 'SELECT'
             || target.isContentEditable
+            || target.tagName === 'BUTTON'
         );
 
         const isButtonContext = target && target.tagName === 'BUTTON';
@@ -1136,8 +1151,15 @@
         const numpadEffectKey = extractNumpadEffectKey(event);
         if (getSelectedMarkerCode() === 'first_to_fifth_ball' && numpadEffectKey) {
             event.preventDefault();
-            selectRebatidaEffect(numpadEffectKey);
-            showPlaybackIndicator(EFFECT_LABEL_BY_KEY[numpadEffectKey] || `Efeito ${numpadEffectKey}`);
+            if (numpadInputPhase === 'position') {
+                selectTableHitPosition(numpadEffectKey);
+                showPlaybackIndicator(POSITION_LABEL_BY_KEY[numpadEffectKey] || `Posicao ${numpadEffectKey}`);
+            } else {
+                numpadInputPhase = 'effect';
+                highlightNumpadPhase();
+                selectRebatidaEffect(numpadEffectKey);
+                showPlaybackIndicator(EFFECT_LABEL_BY_KEY[numpadEffectKey] || `Efeito ${numpadEffectKey}`);
+            }
             return;
         }
 
@@ -1159,7 +1181,7 @@
         const isArrowLeft = event.code === 'ArrowLeft';
         const isArrowRight = event.code === 'ArrowRight';
         const isEscape = event.code === 'Escape';
-        const isEnter = event.code === 'Enter';
+        const isEnter = event.key === 'Enter' || event.code === 'NumpadEnter';
 
         if (!isSpace && !isArrowUp && !isArrowDown && !isArrowLeft && !isArrowRight && !isEscape && !isEnter) {
             return;
@@ -1198,10 +1220,18 @@
 
         if (isEscape) {
             resetRoi();
+            resetNumpadPhase();
             return;
         }
 
         if (isEnter) {
+            if (getSelectedMarkerCode() === 'first_to_fifth_ball' && numpadInputPhase !== 'position') {
+                numpadInputPhase = 'position';
+                highlightNumpadPhase();
+                showPlaybackIndicator('Escolha a posicao');
+                scoreboardStatus.textContent = 'Efeito confirmado. Escolha o quadrante na mesa com o numpad.';
+                return;
+            }
             saveSelectedMarkerAndResume()
                 .then(() => {
                     null;
