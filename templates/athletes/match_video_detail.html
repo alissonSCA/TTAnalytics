@@ -237,7 +237,7 @@
                 <li><strong>Seta para direita:</strong> avancar frame</li>
                 <li><strong>Seta para esquerda:</strong> voltar frame</li>
                 <li><strong>Esc:</strong> limpar ROI e voltar ao video original</li>
-                <li><strong>Enter:</strong> salvar o marcador selecionado</li>
+                <li><strong>Enter:</strong> salvar o marcador selecionado (fora dos botoes de detalhe)</li>
                 <li><strong>Letra:</strong> selecionar marcador pelo atalho</li>
                 <li><strong>Numpad 1-9:</strong> escolher efeito da Rebatida (5 = sem efeito)</li>
             </ul>
@@ -1123,7 +1123,9 @@
             || target.isContentEditable
         );
 
-        if (isTypingContext) {
+        const isButtonContext = target && target.tagName === 'BUTTON';
+
+        if (isTypingContext || isButtonContext) {
             return;
         }
 
