@@ -7,6 +7,24 @@ Aplicação web para análise de partidas de tênis de mesa com marcação de a�
 - Python 3.11+
 - Ambiente virtual (`.venv`)
 
+## Deploy com Docker
+
+O projeto agora inclui `Dockerfile`, `docker-compose.yml`, nginx e workflow de GitHub Actions para deploy via SSH.
+
+1. Copie `.env.example` para `.env` e ajuste os valores de produção.
+2. No servidor, deixe o repositório clonado em um diretório fixo, com Docker e Docker Compose instalados.
+3. Configure os secrets do GitHub Actions:
+	- `SSH_HOST`
+	- `SSH_USER`
+	- `SSH_KEY`
+	- `SSH_PORT` opcional
+	- `DEPLOY_PATH`
+4. Faça push para `main` para disparar o deploy.
+
+Na primeira vez, clone o repositório manualmente no caminho indicado por `DEPLOY_PATH` e crie o arquivo `.env` nesse diretório.
+
+O nginx expõe a aplicação na porta 8001 no servidor, e os arquivos de `static/` e `media/` ficam em volumes compartilhados.
+
 ## Instalação
 
 1. Entrar na pasta do projeto:
